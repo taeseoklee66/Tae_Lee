@@ -1,28 +1,25 @@
 # Simulation & Risk Analysis Project 
-
-Compagnie Pétrolière et Gazière, INC. (hereafter the “Company”) requested to analyze oil and gas drilling project. The drilling outcome results in either a "dry well" or a "wet well." A wet well generates revenue through the production of oil/gas over time, calculated based on assumed product prices and declining production rates from initial values. I simulated the future values of 2024 drilling costs and simulated distributions for the cost of a dry well and the net present value (NPV) for a wet well. Additionally, I incorporated the probability of a wet well and the number of wells to simulate the NPV for the entire project. My simulation resulted in a right-skewed distribution for the NPV with a median of $250 million with an initial investment of $124 million. Over 15 years, this is a 4.8% annual return on investment. 
+Compagnie Pétrolière et Gazière, INC. (hereafter referred to as the "Company") commissioned an analysis of an oil and gas drilling project to aid in the decision-making process. The drilling outcome results in either a "dry well" or a "wet well." A wet well generates revenue through the production of oil/gas over time, calculated based on assumed product prices and declining production rates from initial values. I simulated the future values of 2024 drilling costs and simulated distributions for the cost of a dry well and the net present value (NPV) for a wet well. Additionally, I incorporated the probability of a wet well and the number of wells to simulate the NPV for the entire project. My simulation resulted in a right-skewed distribution for the NPV with a median of $250 million with an initial investment of $124 million. Over 15 years, this is a 4.8% annual return on investment. 
 
 ## Data used
 The dataset provided by the Company includes estimated drilling costs for crude oil, natural gas, and dry wells spanning the period from 1960-2007. Due to changes in reporting regulations and the evolving nature of the industry, only data from 1990-2006 is deemed relevant for this analysis. The year 2007 is considered an outlier and has been excluded from further consideration. Additionally, the provided data includes arithmetic annual changes in drilling costs, calculated from 1990-2006, which served as the basis for simulating possible future values of drilling costs for 2024. Instead of focusing individually on costs for oil, gas, and dry wells, a recommendation is made by the Company's analysts to treat them equally and assume that an average cost applies to all of them, assuming independence, resulting in a final dataset of 48 observations. In addition, I used annual projections of oil prices from 2025 to 2050, which include high, low, and actual estimates for oil prices. 
 
 ## Methodology
-I simulated the price of drilling a single dry well and the NPV, which is the sum of all expenses and revenues of drilling a single wet well. Subsequently, I simulated the number of wet wells to estimate the NPV of the entire project. Then, I multiplied the number of each well to their respective costs to calculate the NPV in the next 15 years. Throughout 100,000 simulations, I ensured to account for the extreme scenarios to account for the potential risk of the projects. 
+The project involves various drilling processes, with outcomes categorized as either a dry well or a wet well. I simulated the price of drilling a single dry well and the NPV of wet well, which is the sum of all expenses and revenues of drilling a single wet well. Subsequently, I simulated the likelihood of wet wells to estimate the NPV of the entire project. Then, I multiplied the number of each well to their respective costs to calculate the NPV in the next 15 years. Throughout 100,000 simulations, I ensured to account for the extreme scenarios to account for the potential risk of the projects. 
 
 ### Dry Well Cost
 If the company encounters a dry well, it incurs expenses including drilling, seismic, lease, professional overhead, and completion costs, with no revenue generated. I simulated the Dry Well Costs from 2007-2023. Based on the U.S. Energy Information Association report, I followed different distribution assumptions to simulate each period of time:
 #### 2007-2012 Drilling Cost
-The Company’s Price Analysis group assumed that drilling cost changes from one year to the next from 2006-2012 follow a normal distribution. For the first approach, I validated this normality assumption by viewing quantile-quantile plots and through the Shapiro-Wilk normality test and found this assumption reasonable. 
+The Company’s Price Analysis group assumed that drilling cost changes from one year to the next from 2006-2012 follow a normal distribution. For this approach, I validated normality assumption by viewing quantile-quantile plots and through the Shapiro-Wilk normality test and found this assumption reasonable. 
 #### 2012-2023 Drilling Cost
 I used a beta distribution to simulate the drilling cost fluctuations for 2012-2015 and 2015-2023. The beta distribution was achieved through a three-point estimation method incorporating the mean, minimum, and maximum values provided in the report, ensuring alignment of projections with a normal distribution shape. To capture the decreasing price trend (-9.17% on average) from 2012-2015, I used a B(α=1, β=7) distribution with a maximum of 22% and a minimum of 7%. For the increasing trend from 2015-2023 (5% on average), I used a B(α=7, β=2) distribution with a maximum of 6% and a minimum of 2%.
 #### SEISMIC AND LEASE COSTS
-Seismic and lease costs include purchasing seismic data to determine the optimal well location and the right to drill on the land. The price of a single seismic section is $43,000, and the number of seismic sections necessary per well is normally distributed with a mean of 3 sections and a standard deviation of 0.35. The price to lease a single acre is $960, and the number of acres required per well is also normally distributed with a mean of 600 acres and a standard deviation of 50.
+Seismic and lease costs include purchasing seismic data to determine the optimal well location and the right to drill on the land. The price of a single seismic section is $43,000 and the number of seismic sections necessary per well is normally distributed with a mean of 3 sections and a standard deviation of 0.35. The price to lease a single acre is $960 and the number of acres required per well is also normally distributed with a mean of 600 acres and a standard deviation of 50.
 #### PROFESSIONAL OVERHEAD
 The professional overhead per well is represented by a triangular distribution, with a most likely cost of $215,000, a minimum of $172,000, and a maximum of $279,500. This is an annual expense over the lifetime of a well but stops after the first year if the well is dry.
-#### FINAL DRY WELL COST
-Dry wells incur drilling costs, seismic and lease costs, and one year of professional overhead costs. The sum of the mean and most likely expenses is $6,238,000 with a mean drilling cost of $5,318,000, mean seismic and lease cost of $705,000, and most likely an overhead cost of $215,000. For a complete understanding of potential dry well costs, see Figure 1.
 
 ```ruby
-#NPV of a single Dry well
+#Cost of a single Dry well
 Dry_well_cost <- rep(0,100000)
 set.seed(123)
 for(i in 1:100000){
@@ -59,12 +56,9 @@ for(i in 1:100000){
   #Drilling cost Unit is thousand dollar
   Dry_well_cost[i] <- Pt*1000 + Lease_cost + Seismic_cost + Overhead_cost
 }
-``` 
-The dry well cost simulation resulted in a normal-looking distribution, with a median cost of $5,913,626. This distribution is shown in Figure 1. The worst-case scenario
- 2
-is represented by the right side of the distribution. In the worst 5% of scenarios, the average cost of a dry well is $11,838,281.
-
-<img width="575" alt="image" src="https://github.com/taeseoklee66/Tae_Lee/assets/120340773/4badce8f-aba8-4ab6-ad18-7c8f4b8391de">
+```
+The dry well cost simulation resulted in a normal-looking distribution, with a median cost of $5,913,626. This distribution is shown in Figure 1. 
+<img width="659" alt="image" src="https://github.com/taeseoklee66/Tae_Lee/assets/120340773/bd731f87-2863-4019-89b6-5643889dbaff">
 
 ### Wet Well NPV
 The NPV for a wet well is calculated, accounting for analogous expenses incurred for a dry well, alongside additional factors such as completion cost, production risk, revenue risk, and operating expenses.
@@ -84,10 +78,12 @@ The final step of the calculation involves summing all revenues and expenses for
 #Set Initial production rate and yearly decline rate
 IP = rlnorm(100000, meanlog = 6, sdlog = 0.28)
 decline_rate = runif(100000, min = 0.15, max = 0.32)
+
 #Correlation 0.64 between the IP and the decline rate
 ip_decline_rate <- rep(0,100000)
 R <- matrix(data=cbind(1, 0.64, 0.64, 1), nrow=2)
 U <- t(chol(R))
+
 #Make a function for adding correlation 
 standardize <- function(x){
   x.std = (x - mean(x))/sd(x)
@@ -134,6 +130,7 @@ for(i in 1:100000){
   #Seismic Cost
   Seismic_section <- rnorm(n=1, mean = 3, sd = 0.35)
   Seismic_cost <- Seismic_section * 43000
+
   #Now Additional costs for wet well
   #Completion Cost (One time cost if the well is wet)
   Completion_cost <- rnorm(n=1, mean = 390000, sd = 50000)
@@ -170,11 +167,11 @@ for(i in 1:100000){
   NPV[i] = Final_Year_revenue - Lease_cost - Seismic_cost - Completion_cost - (Pt*1000)
 }
 ```
-The NPV simulation resulted in a right-skewed distribution, shown in Figure 2 below. The median of the distribution is $19,077,186. In this case, the worst-case scenario is represented by the left side of the distribution. In the worst 5% of scenarios, the mean NPV is $6,586,623.
-<img width="632" alt="image" src="https://github.com/taeseoklee66/Tae_Lee/assets/120340773/f8b4a2bf-8990-4742-9f92-863e6b243ca4">
+The NPV simulation resulted in a right-skewed distribution, shown in Figure 2 below. The median of the distribution is $19,077,186. 
+<img width="901" alt="image" src="https://github.com/taeseoklee66/Tae_Lee/assets/120340773/704a06fe-6ccf-478f-87a5-ecf04d40df8b">
 
 ### Wet Well Likelihood
-The two variable factors necessary for a profitable well are that it contains hydrocarbons and that a reservoir can be developed in the rock formation to hold hydrocarbons. The probability of hydrocarbon presence in a well is normally distributed with a mean of 99% and a standard deviation of 5%. The probability that a reservoir can be developed is normally distributed with a mean of 80% and a standard deviation of 10%. The two constant factors associated with a wet well are that an impermeable seal must be available to trap the hydrocarbons in the reservoir, and a structure or closure must be present that will cause the hydrocarbons to pool in a field where the drill bit will penetrate. Both of these factors have a 100% probability of occurrence. Additionally, I calculated 5% Value at risk (VaR) and Conditional Value at Riks (CVaR).
+The two variable factors necessary for a profitable well are that it contains hydrocarbons and that a reservoir can be developed in the rock formation to hold hydrocarbons. The probability of hydrocarbon presence in a well is normally distributed with a mean of 99% and a standard deviation of 5%. The probability that a reservoir can be developed is normally distributed with a mean of 80% and a standard deviation of 10%. The two constant factors associated with a wet well are that an impermeable seal must be available to trap the hydrocarbons in the reservoir, and a structure or closure must be present that will cause the hydrocarbons to pool in a field where the drill bit will penetrate. Both of these factors have a 100% probability of occurrence. 
 
 ### NUMBER OF WET WELLS
 To calculate the number of wet wells, I used the probabilities of wet wells outlined previously along with the total number of planned wells. Using a normal distribution for the probability of hydrocarbons and reservoirs, I multiplied to get the overall probability of a wet well. I then used a uniform distribution with a minimum of 10 and a maximum of 30 to simulate the total number of wells, and multiplied by the probability to get the total number of wet wells.
