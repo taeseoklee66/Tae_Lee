@@ -58,6 +58,7 @@ for(i in 1:100000){
 }
 ```
 The dry well cost simulation resulted in a normal-looking distribution, with a median cost of $5,913,626. This distribution is shown in Figure 1. 
+
 <img width="659" alt="image" src="https://github.com/taeseoklee66/Tae_Lee/assets/120340773/bd731f87-2863-4019-89b6-5643889dbaff">
 
 ### Wet Well NPV
