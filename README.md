@@ -3,22 +3,26 @@ Simulation Project
 # Project 1: Simulation
 
 {
-   "cell_type": "code",
-   "execution_count": 1,
+ "cells": [
+  {
+   "attachments": {},
+   "cell_type": "raw",
    "metadata": {},
-   "outputs": [],
    "source": [
-    "#| echo: false\n",
-    "\n",
-    "# Fix for the progress bar not displaying correctly during training\n",
-    "from IPython.display import clear_output, DisplayHandle\n",
-    "\n",
-    "\n",
-    "def update_patch(self, obj):\n",
-    "    clear_output(wait=True)\n",
-    "    self.display(obj)\n",
-    "\n",
-    "\n",
-    "DisplayHandle.update = update_patch\n"
+    "---\n",
+    "title: Classifying Artwork Types With Fastai\n",
+    "author: Yang Chen\n",
+    "date: 09/27/2023\n",
+    "date-modified: 10/06/2023\n",
+    "categories:\n",
+    "    -   machine learning\n",
+    "    -   computer vision\n",
+    "format:\n",
+    "    html:\n",
+    "        toc: true\n",
+    "        number-sections: true\n",
+    "        code-fold: show\n",
+    "jupyter: python3\n",
+    "---"
    ]
   }
