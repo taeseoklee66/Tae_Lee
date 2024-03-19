@@ -2,5 +2,23 @@
 Simulation Project
 # Project 1: Simulation
 
-VaR_Wet <- quantile(P_Wetwell, 0.05, na.rm=TRUE)
-CVaR_Wet <- round(mean(P_Wetwell[P_Wetwell < VaR_Wet]),2)
+{
+   "cell_type": "code",
+   "execution_count": 1,
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "#| echo: false\n",
+    "\n",
+    "# Fix for the progress bar not displaying correctly during training\n",
+    "from IPython.display import clear_output, DisplayHandle\n",
+    "\n",
+    "\n",
+    "def update_patch(self, obj):\n",
+    "    clear_output(wait=True)\n",
+    "    self.display(obj)\n",
+    "\n",
+    "\n",
+    "DisplayHandle.update = update_patch\n"
+   ]
+  }
